@@ -1,4 +1,4 @@
-# Messages API Documentation
+# ANTHROPIC Chat Completion
 
 The **Messages API** facilitates conversational interactions by generating model responses based on structured input messages. It supports both single-turn and multi-turn stateless conversations.
 
