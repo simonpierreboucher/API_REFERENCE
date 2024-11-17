@@ -1,5 +1,5 @@
 
-# Embeddings API Documentation
+# MISTRAL Embedding
 
 The **Embeddings API** generates vector representations of input text that can be used in downstream tasks such as similarity comparisons, clustering, or search indexing.
 
