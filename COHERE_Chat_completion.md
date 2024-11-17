@@ -1,4 +1,4 @@
-# Documentation for Cohere Chat API (POST)
+# COHERE Chat Completion
 
 The Cohere Chat API allows you to generate text responses to user messages, supporting tools and system messages for advanced conversation flows. This endpoint is especially useful for creating conversational AI applications.
 
