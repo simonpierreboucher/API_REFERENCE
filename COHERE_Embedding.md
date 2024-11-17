@@ -1,4 +1,4 @@
-# Documentation for Cohere Embed API (POST)
+# Cohere Embedding
 
 The **Embed API** generates embeddings for input texts or images. An embedding is a vector of floating-point numbers capturing semantic information about the text or image it represents. These embeddings are useful for tasks like semantic search, classification, and clustering.
 
