@@ -1,4 +1,4 @@
-# Voyage Multimodal Embeddings API Documentation
+# VOYAGE Multimodal Embedding
 
 The **Voyage Multimodal Embeddings API** generates vector representations for inputs containing text, images, or a combination of both. These embeddings can be used for retrieval, search, or clustering in applications requiring multimodal data handling.
 
