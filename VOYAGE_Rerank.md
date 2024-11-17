@@ -1,4 +1,4 @@
-# Voyage Reranker API Documentation
+# VOYAGE Rerank
 
 The **Voyage Reranker API** evaluates and ranks documents based on their relevance to a given query. It supports various models optimized for different use cases and performance requirements.
 
