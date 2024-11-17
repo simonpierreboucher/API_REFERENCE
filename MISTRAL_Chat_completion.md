@@ -1,4 +1,4 @@
-# Chat Completion API Documentation
+# MISTRAL Chat Completion
 
 The **Chat Completion API** generates conversational responses based on a sequence of input messages. It provides a wide range of customization options to control the behavior and creativity of the responses.
 
