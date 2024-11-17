@@ -1,4 +1,4 @@
-# Documentation for Cohere Rerank API (POST)
+# COHERE Rerank
 
 The **Rerank API** endpoint reorders a list of documents based on their relevance to a given query. It provides relevance scores for each document, enabling improved search and ranking capabilities.
 
