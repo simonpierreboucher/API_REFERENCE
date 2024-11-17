@@ -116,6 +116,32 @@ The response returns a JSON object with the following fields:
 | `message`        | Object | The generated message from the assistant.                                                       |
 | `usage`          | Object | Details about token usage and billing.                                                          |
 
+
+
+---
+
+## Example cURL Command
+
+```bash
+curl --request POST \
+  --url https://api.cohere.com/v2/chat \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --header "Authorization: Bearer $CO_API_KEY" \
+  --data '{
+    "model": "command-r-plus-08-2024",
+    "messages": [
+      {
+        "role": "user",
+        "content": {
+          "type": "text",
+          "text": "Hello world!"
+        }
+      }
+    ]
+  }'
+```
+
 ### Example Response
 
 ```json
@@ -143,28 +169,3 @@ The response returns a JSON object with the following fields:
   }
 }
 ```
-
----
-
-## Example cURL Command
-
-```bash
-curl --request POST \
-  --url https://api.cohere.com/v2/chat \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --header "Authorization: Bearer $CO_API_KEY" \
-  --data '{
-    "model": "command-r-plus-08-2024",
-    "messages": [
-      {
-        "role": "user",
-        "content": {
-          "type": "text",
-          "text": "Hello world!"
-        }
-      }
-    ]
-  }'
-```
-
