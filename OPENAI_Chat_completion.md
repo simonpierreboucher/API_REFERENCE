@@ -1,4 +1,4 @@
-# Create Chat Completion API Documentation
+# OPENAI Chat Completion
 
 The **Create Chat Completion API** generates responses for a given conversation using a specified model.
 
