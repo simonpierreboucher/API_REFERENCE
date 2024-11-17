@@ -169,3 +169,228 @@ curl --request POST \
   }
 }
 ```
+
+
+# Documentation for Chat API with Streaming (POST)
+
+The **Chat API with Streaming** endpoint allows you to generate text responses to user messages in real time, token by token. This feature is ideal for building interactive and responsive applications.
+
+---
+
+## Endpoint
+
+**POST** `https://api.cohere.com/v2/chat`
+
+---
+
+## Purpose
+
+Generate a streamed token-by-token response to user input, providing real-time conversational feedback.
+
+---
+
+## Headers
+
+| Header Name         | Type   | Required | Description                              |
+|---------------------|--------|----------|------------------------------------------|
+| `Authorization`     | String | Required | Bearer token for authentication.        |
+| `accept`            | String | Required | Must be set to `application/json`.       |
+| `content-type`      | String | Required | Must be set to `application/json`.       |
+| `X-Client-Name`     | String | Optional | Name of the project making the request. |
+
+---
+
+## Request Body
+
+The request expects a JSON object with the following structure:
+
+### Required Fields
+
+| Field           | Type   | Description                                                                                     |
+|------------------|--------|-------------------------------------------------------------------------------------------------|
+| `stream`        | Boolean | Set to `true` to enable streaming responses.                                                   |
+| `model`         | String | Name of the Cohere model to use, such as `command-r-plus-08-2024`.                              |
+| `messages`      | Array  | List of messages representing the conversation. See "Message Structure" below.                 |
+
+### Optional Fields
+
+| Field               | Type    | Description                                                                                                         |
+|---------------------|---------|---------------------------------------------------------------------------------------------------------------------|
+| `tools`             | Array   | List of tools (functions) the model can invoke.                                                                    |
+| `response_format`   | Object  | Specifies the desired output format, including optional JSON schema for structure enforcement.                     |
+| `safety_mode`       | Enum    | Options: `CONTEXTUAL`, `STRICT`, `OFF`. Default: `CONTEXTUAL`. Controls safety level for content generation.        |
+| `max_tokens`        | Integer | Limits the maximum number of tokens generated in the response.                                                     |
+| `temperature`       | Float   | Controls randomness in the output. Default: `0.3`. Lower = deterministic, higher = more creative.                  |
+| `frequency_penalty` | Float   | Penalizes token repetition. Range: 0.0 to 1.0.                                                                     |
+| `presence_penalty`  | Float   | Penalizes repeated token presence. Range: 0.0 to 1.0.                                                              |
+| `k`                 | Float   | Restricts output to the top-k most likely tokens. Range: 0 to 500.                                                 |
+| `p`                 | Float   | Restricts output to tokens within a cumulative probability `p`. Range: 0.01 to 0.99.                               |
+
+---
+
+### Message Structure
+
+Messages must include a `role` and `content`. Supported roles are:
+- **user**: The input message from the user.
+- **assistant**: The model's response.
+- **system**: Instructions or configurations for the assistant.
+- **tool**: Information related to a tool invocation.
+
+#### Example Message Formats
+
+**User Message:**
+```json
+{
+  "role": "user",
+  "content": {
+    "type": "text",
+    "text": "Hello world!"
+  }
+}
+```
+
+**Assistant Message:**
+```json
+{
+  "role": "assistant",
+  "content": [
+    {
+      "type": "text",
+      "text": "Hello! How can I assist you today?"
+    }
+  ]
+}
+```
+
+**System Message:**
+```json
+{
+  "role": "system",
+  "content": {
+    "type": "text",
+    "text": "You are a helpful assistant."
+  }
+}
+```
+
+---
+
+## Server-Sent Events (Streaming)
+
+When `stream` is set to `true`, the response is delivered as **Server-Sent Events (SSE)**, enabling real-time delivery of tokens.
+
+### Event Types
+
+| Event Type         | Description                                                                                   |
+|---------------------|-----------------------------------------------------------------------------------------------|
+| `message-start`    | Indicates the start of the assistant's response message.                                      |
+| `content-start`    | Signals the beginning of a new content block.                                                 |
+| `content-delta`    | Contains a chunk of text (token). Multiple deltas make up the full message.                   |
+| `content-end`      | Indicates the end of a content block.                                                         |
+| `message-end`      | Marks the end of the response stream, including usage statistics and finish reason.            |
+
+---
+
+### Example Event Stream
+
+
+### Example cURL Command
+
+```bash
+curl --request POST \
+  --url https://api.cohere.com/v2/chat \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --header "Authorization: Bearer $CO_API_KEY" \
+  --data '{
+    "stream": true,
+    "model": "command-r-plus-08-2024",
+    "messages": [
+      {
+        "role": "user",
+        "content": {
+          "type": "text",
+          "text": "Hello world!"
+        }
+      }
+    ]
+  }'
+```
+---
+#### Start of Message
+```json
+{
+  "type": "message-start",
+  "id": "cc5336e7-24f3-492d-a87c-d473907feb2c",
+  "delta": {
+    "message": {
+      "role": "assistant",
+      "content": [],
+      "tool_plan": "",
+      "tool_calls": [],
+      "citations": []
+    }
+  }
+}
+```
+
+#### Content Start
+```json
+{
+  "type": "content-start",
+  "index": 0,
+  "delta": {
+    "message": {
+      "content": {
+        "type": "text",
+        "text": ""
+      }
+    }
+  }
+}
+```
+
+#### Content Delta (Token by Token)
+```json
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":"Hello"}}}}
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":"!"}}}}
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":" How"}}}}
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":" can"}}}}
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":" I"}}}}
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":" help"}}}}
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":" you"}}}}
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":" today"}}}}
+{"type":"content-delta","index":0,"delta":{"message":{"content":{"text":"?"}}}}
+```
+
+#### End of Content
+```json
+{
+  "type": "content-end",
+  "index": 0
+}
+```
+
+#### End of Message
+```json
+{
+  "type": "message-end",
+  "delta": {
+    "finish_reason": "COMPLETE",
+    "usage": {
+      "billed_units": {
+        "input_tokens": 3,
+        "output_tokens": 9
+      },
+      "tokens": {
+        "input_tokens": 209,
+        "output_tokens": 9
+      }
+    }
+  }
+}
+```
+
+
+---
+
