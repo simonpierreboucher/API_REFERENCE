@@ -1,4 +1,4 @@
-# Create Embeddings API Documentation
+# OPENAI Embedding
 
 The **Create Embeddings API** generates an embedding vector representing the input text. Embeddings are numerical vector representations of text that can be used for various machine learning and search tasks.
 
