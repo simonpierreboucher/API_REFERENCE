@@ -1,4 +1,4 @@
-# Voyage Embeddings API Documentation
+# VOYAGE Embedding
 
 The **Voyage Embeddings API** generates vector embeddings for input text using specialized models. These embeddings can be used for tasks such as similarity comparison, clustering, and retrieval in domain-specific applications.
 
