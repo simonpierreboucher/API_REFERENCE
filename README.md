@@ -67,7 +67,7 @@ This repository serves as a comprehensive reference for multiple APIs used in la
 ---
 
 ## Repository URL
-You can access this repository [here](https://github.com/simonpierreboucher/API_REFERENCE.git).
+You can access this repository [here](https://github.com/simonpierreboucher/API_REFERENCE_LLM.git).
 
 ---
 
